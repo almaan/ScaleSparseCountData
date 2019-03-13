@@ -2,7 +2,7 @@
 
 Estimates size factors used to scale observed data
 
-Primarly inspired by Lun.et alls method proposed in 
+Primarly inspired by Lun.et al's method proposed in 
     
 "Pooling across cells to normalize single-cell RNA sequencing data with many zero counts"
 
