@@ -1,6 +1,6 @@
 ## Method To Scale Sparse Count Data
 
-Estimates size factors to scale observed data
+Estimates size factors used to scale observed data
 
 Primarly inspired by Lun.et alls method proposed in 
     
