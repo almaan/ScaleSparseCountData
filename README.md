@@ -18,5 +18,5 @@ factors conditioned on each cluster. This is **not** implemented in this method,
 
 Example of results
 
-![alt text](https://github.com/adam-p/markdown-here/raw/master/src/common/images/icon48.png "Example with simulated data")
+![alt text](img/ex1.png "Example with simulated data")
     
