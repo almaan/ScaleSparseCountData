@@ -120,7 +120,7 @@ if __name__ == '__main__':
     import matplotlib.font_manager as font_manager
     plt.style.use('dark_background')
     
-    # Simulate Data --------------------
+    # Simulate Dataset of non DE genes --------------------
     
     nsamples = 100
     ngenes = 2000
