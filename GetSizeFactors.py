@@ -13,7 +13,7 @@ from scipy.stats import nbinom
 from scipy.optimize import lsq_linear
 
 def GetSizeFactors(cmat : np.ndarray,
-                   pool_size : int = 10,
+                   pool_size,
                    ) -> np.ndarray:
 
     """
@@ -94,24 +94,24 @@ def GetSizeFactors(cmat : np.ndarray,
                    for k in range(pools.shape[0])])
 
     # Pseudo cell expression profile for each gene
-    U = cmat.mean(axis=0).reshape(1,-1)
-
+    U = np.mean(Z,axis=0).reshape(1,-1)
     # Ratio of Pools and Reference
-    R = V / U
-
+    R = V / U 
     # Membership matrix for lstq
     A = np.zeros((pools.shape[0]*nsamples))
     A[pools1d] = 1.0
     # reshape memership vector into 2d matrix
     A = A.reshape((pools.shape[0],nsamples))
+
     #Matrix of estimatead theta/libsize values
     T = lsq_linear(A,
                    R.mean(axis=1),
                    bounds = (0,np.inf)).x
 
     # adjust for library size parameter
-    S = T * libsize
-
+    S =  T  * libsize
+    S = S / S.max() 
+    
     return S
 
 if __name__ == '__main__':
@@ -123,18 +123,19 @@ if __name__ == '__main__':
 
     # Simulate Dataset of non DE genes --------------------
 
-    nsamples = 100
+    nsamples = 500
     ngenes = 2000
     # parameters for nb distribution
-    n = np.repeat(np.random.randint(1,10,ngenes).reshape(1,-1),nsamples,axis = 0)
+    m = np.repeat(np.random.randint(1,10,ngenes).reshape(1,-1),nsamples,axis = 0)
     p = np.repeat(np.random.uniform(0,1,ngenes).reshape(1,-1),nsamples, axis = 0)
     # scaling factors for rate
-    theta = np.random.uniform(0,20,n.shape[0]).reshape(-1,1)
+    theta = np.random.uniform(0,5,m.shape[0]).reshape(-1,1)
     # scaled rate parameters
-    ns = n * theta
+    ns = m * theta
+    r = ns*(1-p) / p
 
     # generate synthetic count matrix
-    cmat = nbinom.rvs(n = ns,p = p)
+    cmat = nbinom.rvs(n = r,p = p)
     # remove bad samples and genes
     cmat = cmat[cmat.sum(axis = 1) > 50, :]
     cmat = cmat[:,cmat.sum(axis = 0) > 50]
